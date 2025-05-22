@@ -1,0 +1,27 @@
+<ion-header>
+<ion-toolbar>
+<ion-title>Step Form</ion-title>
+</ion-toolbar>
+</ion-header>
+ 
+  <ion-content class="ion-padding">
+<form>
+<div *ngFor="let step of steps">
+<ion-item>
+<ion-label>{{ 'Step ' + step }}</ion-label>
+<ion-select
+            [(ngModel)]="formValues[step]"
+            name="step{{step}}"
+            placeholder="Select option"
+>
+<ion-select-option *ngFor="let opt of options" [value]="opt">
+              {{ opt }}
+</ion-select-option>
+</ion-select>
+</ion-item>
+</div>
+</form>
+ 
+    <ion-button expand="block">Submit</ion-button>
+ 
+</ion-content>
