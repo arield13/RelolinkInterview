@@ -3,25 +3,62 @@
 <ion-title>Step Form</ion-title>
 </ion-toolbar>
 </ion-header>
- 
-  <ion-content class="ion-padding">
-<form>
-<div *ngFor="let step of steps">
-<ion-item>
-<ion-label>{{ 'Step ' + step }}</ion-label>
-<ion-select
-            [(ngModel)]="formValues[step]"
-            name="step{{step}}"
-            placeholder="Select option"
->
-<ion-select-option *ngFor="let opt of options" [value]="opt">
-              {{ opt }}
-</ion-select-option>
-</ion-select>
-</ion-item>
-</div>
-</form>
- 
-    <ion-button expand="block">Submit</ion-button>
- 
+<ion-content class="ion-padding">
+  <form [formGroup]="form">
+    <ng-container [ngSwitch]="step">
+      <!-- Step 1 -->
+      <div *ngSwitchCase="1">
+        <ion-label>Name</ion-label>
+        <ion-input formControlName="name" placeholder="Enter name"></ion-input>
+      </div>
+
+      <!-- Step 2 -->
+      <div *ngSwitchCase="2">
+        <ion-label>Last Name</ion-label>
+        <ion-input formControlName="lastName" placeholder="Enter last name"></ion-input>
+      </div>
+
+      <!-- Step 3 -->
+      <div *ngSwitchCase="3">
+        <ion-label>Country</ion-label>
+        <ion-select formControlName="country" (ionChange)="nextStep()" placeholder="Choose country">
+          <ion-select-option *ngFor="let country of countries" [value]="country">
+            {{ country }}
+          </ion-select-option>
+        </ion-select>
+      </div>
+
+
+      <!-- Step 4 -->
+      <div *ngSwitchCase="4">
+        <ion-label>City</ion-label>
+        <ion-select formControlName="city" placeholder="Choose city">
+          <ion-select-option *ngFor="let city of cityOptions" [value]="city" >
+            {{ city }}
+          </ion-select-option>
+        </ion-select>
+      </div>
+
+      <!-- Step 5 -->
+      <div *ngSwitchCase="5">
+        <ion-label>Phone Number</ion-label>
+        <ion-input formControlName="phoneNumber" placeholder="Enter phone number"></ion-input>
+      </div>
+
+      <!-- Step 6 -->
+      <div *ngSwitchCase="6">
+        <ion-label>Email</ion-label>
+        <ion-input type="email" formControlName="email" placeholder="Enter email"></ion-input>
+      </div>
+    </ng-container>
+      
+    <div class="ion-padding-top">
+      <ion-button (click)="prevStep()" [disabled]="step === 1">Previous</ion-button>
+      <ion-button *ngIf="step < 6" (click)="nextStep()">Next</ion-button>
+      <ion-button *ngIf="step === 6" (click)="submitForm()" color="primary">Submit</ion-button>
+    </div>
+    <div>
+     <pre>{{ showPayload ? (form.value | json) : '' }}</pre>
+    </div>
+  </form>
 </ion-content>
